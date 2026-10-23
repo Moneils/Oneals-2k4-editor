@@ -30,6 +30,32 @@ jobs:
       - name: Extract Android project
         run: unzip -q Oneals_2K4_Android_Tablet_ISO_Patching_Source.zip -d extracted
 
+      - name: Repair missing error helper
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = next(Path("extracted").rglob("MainActivity.java"))
+          source = p.read_text()
+          marker = "public class MainActivity extends"
+
+          if "void error(String" not in source:
+              import re
+              source, count = re.subn(
+                  r'(public class MainActivity extends [^{]+\{)',
+                  r'\1\n  void error(String message) {\n'
+                  r'    android.widget.Toast.makeText(this, message, '
+                  r'android.widget.Toast.LENGTH_LONG).show();\n'
+                  r'  }\n',
+                  source,
+                  count=1
+              )
+              if count != 1:
+                  raise RuntimeError("Could not locate MainActivity class")
+              p.write_text(source)
+          PY
+          
       - name: Build APK
         shell: bash
         run: |
