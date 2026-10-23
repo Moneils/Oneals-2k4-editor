@@ -28,8 +28,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract Android project
-        run: unzip -q Oneals_2K4_Android_Tablet_ISO_Patching_Source.zip -d extracted
-
+        run: unzip -q Oneals_2K4_Editor_Full_Formation_View_Fixed.zip -d extracted
       - name: Repair missing error helper
         shell: bash
         run: |
