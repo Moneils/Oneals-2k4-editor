@@ -28,12 +28,11 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      
       - name: Extract Android project
         shell: bash
         run: |
-          ZIP=$(find . -maxdepth 1 -name 'Oneals_2K4_Editor_*.zip' -print -quit)
-          test -n "$ZIP" || { echo "Source ZIP not found"; exit 1; }
-          unzip -q "$ZIP" -d extracted
+          unzip -q Oneals_2K4_Android_Route_Encoding_Safety_Fix.zip -d extracted
 
       - name: Repair missing error helper
         shell: bash
