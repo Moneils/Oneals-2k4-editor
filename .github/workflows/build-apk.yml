@@ -27,14 +27,12 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Extract Android project
-        run: unzip -q Oneals_2K4_Editor_Full_Formation_View_Fixed.zip -d extracted
-      - name: Repair missing error helper
+            - name: Extract Android project
         shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
+          ZIP=$(find . -maxdepth 1 -name 'Oneals_2K4_Editor_*.zip' -print -quit)
+          test -n "$ZIP" || { echo "Source ZIP not found"; exit 1; }
+          unzip -q "$ZIP" -d extracted
           p = next(Path("extracted").rglob("MainActivity.java"))
           source = p.read_text()
           marker = "public class MainActivity extends"
